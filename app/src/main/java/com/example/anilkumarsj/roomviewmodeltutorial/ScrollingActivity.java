@@ -2,7 +2,9 @@ package com.example.anilkumarsj.roomviewmodeltutorial;
 
 import android.arch.lifecycle.ViewModelProvider;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -10,12 +12,16 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 public class ScrollingActivity extends AppCompatActivity {
 
+    private static final int NEW_NOTE_ACTIVITY_REQUEST_CODE = 1;
     private String TAG = this.getClass().getSimpleName();
 
     NoteViewModel noteViewModel;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,12 +35,31 @@ public class ScrollingActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                Intent intent = new Intent(ScrollingActivity.this,NewNoteActivity.class);
+
+                startActivityForResult(intent,NEW_NOTE_ACTIVITY_REQUEST_CODE);
             }
         });
 
+
+
+
+
         noteViewModel = ViewModelProviders.of(this).get(NoteViewModel.class);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == NEW_NOTE_ACTIVITY_REQUEST_CODE && resultCode ==RESULT_OK){
+
+            Toast.makeText(getApplicationContext(),"Note saved to database",Toast.LENGTH_LONG).show();
+        }
+        else {
+
+            Toast.makeText(getApplicationContext(),"Note  not saved to database",Toast.LENGTH_LONG).show();
+        }
     }
 
     @Override
