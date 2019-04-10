@@ -14,6 +14,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import java.util.UUID;
+
 public class ScrollingActivity extends AppCompatActivity {
 
     private static final int NEW_NOTE_ACTIVITY_REQUEST_CODE = 1;
@@ -53,6 +55,14 @@ public class ScrollingActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == NEW_NOTE_ACTIVITY_REQUEST_CODE && resultCode ==RESULT_OK){
+
+            //code to insert notes
+
+            final String note_id = UUID.randomUUID().toString();
+
+            Note note = new Note(note_id,data.getStringExtra(NewNoteActivity.NOTE_ADDED));
+
+            noteViewModel.insert(note);
 
             Toast.makeText(getApplicationContext(),"Note saved to database",Toast.LENGTH_LONG).show();
         }
